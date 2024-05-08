@@ -1,0 +1,5 @@
+EventType,StateType_starts,StateType_ends
+EnvelopeViolatedEvent,EnvelopeViolationState,
+EnvelopeNormalEvent,,EnvelopeViolationState
+HighChargingEvent,HighChargingState,
+NormalChargingEvent,,HighChargingState

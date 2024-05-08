@@ -1,0 +1,9 @@
+StateType,SensorType_possible
+EnvelopeViolationState,EnvelopeViolation_Sensor
+HighChargingState,AP_EVCharger_Sensor
+LowBatterySocState,SOC_Sensor
+BatteryDipState,AP_Battery_Sensor
+BatteryDischargeLoadingState,AP_Battery_Sensor
+HighChargingDifferenceState,AP_EVCharger_Sensor
+BatteryUnusedState,AP_Battery_Sensor
+BatteryChargingTooHighState,AP_Battery_Sensor

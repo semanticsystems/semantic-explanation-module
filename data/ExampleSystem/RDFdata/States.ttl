@@ -1,0 +1,30 @@
+@prefix s: <http://w3id.org/explainability/sense#> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+s:AP_EVCharger1_Sensor sosa:madeObservation s:HighChargingState1_obs .
+
+s:AP_Garage1_Sensor sosa:madeObservation s:EnvelopeViolationState2_obs .
+
+s:EnvelopeViolationState2 a s:State ;
+    s:hasEndEvent s:EnvelopeViolationState2_end ;
+    s:hasStartEvent s:EnvelopeViolationState2_start ;
+    s:hasStateType s:EnvelopeViolationState .
+
+s:EnvelopeViolationState2_obs a sosa:Observation ;
+    s:endTime "2023-04-11T12:05:17+00:00"^^xsd:dateTime ;
+    s:startTime "2023-04-11T11:00:35+00:00"^^xsd:dateTime ;
+    sosa:hasResult s:EnvelopeViolationState2 ;
+    sosa:usedProcedure s:EventToStateConversion .
+
+s:HighChargingState1 a s:State ;
+    s:hasEndEvent s:HighChargingState1_end ;
+    s:hasStartEvent s:HighChargingState1_start ;
+    s:hasStateType s:HighChargingState .
+
+s:HighChargingState1_obs a sosa:Observation ;
+    s:endTime "2023-04-11T11:19:00+00:00"^^xsd:dateTime ;
+    s:startTime "2023-04-11T10:12:45+00:00"^^xsd:dateTime ;
+    sosa:hasResult s:HighChargingState1 ;
+    sosa:usedProcedure s:EventToStateConversion .
+

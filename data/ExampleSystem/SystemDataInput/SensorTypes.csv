@@ -1,0 +1,13 @@
+SensorType,subClassOf_SensorType
+AP_EVCharger_Sensor,AP_Sensor
+AP_Battery_Sensor,AP_Sensor
+SOC_Battery_Sensor,SOC_Sensor
+AP_PVSystemSensor,AP_Sensor
+AP_Garage_Sensor,AP_Sensor
+OE_Garage_Sensor,OE_Sensor
+EnvelopeViolation_Garage_Sensor,EnvelopeViolation_Sensor
+AP_ConsumerMisc_Sensor,AP_Sensor
+AP_Sensor,Sensor
+SOC_Sensor,Sensor
+OE_Sensor,Sensor
+EnvelopeViolation_Sensor,Sensor

@@ -1,0 +1,6 @@
+Platform,PlatformType,hostedBy_Platform
+EVCharger1,EVCharger,Garage1
+EVCharger2,EVCharger,Garage1
+Battery1,Battery,BatteryOverview
+PVSystem1,PVSystem,Garage1
+Garage1,Garage,System

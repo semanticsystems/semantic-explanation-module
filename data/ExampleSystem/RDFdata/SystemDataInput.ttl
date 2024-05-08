@@ -1,0 +1,246 @@
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix s: <http://w3id.org/explainability/sense#> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+
+s:AP_ConsumerMisc_Sensor rdfs:subClassOf s:AP_Sensor .
+
+s:BatteryChargingTooHighState a s:StateType ;
+    rdfs:label "BatteryChargingTooHighState" ;
+    s:associatedSensorType s:AP_Battery_Sensor .
+
+s:BatteryOverview sosa:hosts s:Battery1 .
+
+s:StateTypeCausality1 a s:StateTypeCausality ;
+    rdfs:label "HighChargingDifferenceState enables BatteryDischargeLoadingState" ;
+    s:cause s:HighChargingDifferenceState ;
+    s:effect s:BatteryDischargeLoadingState ;
+    s:hasCausalRelation s:enables ;
+    s:hasTemporalRelation s:overlaps ;
+    s:hasTopologicalRelation s:siblingPlatform .
+
+s:StateTypeCausality2 a s:StateTypeCausality ;
+    rdfs:label "BatteryDischargeLoadingState causes EnvelopeViolationState" ;
+    s:cause s:BatteryDischargeLoadingState ;
+    s:effect s:EnvelopeViolationState ;
+    s:hasCausalRelation s:causes ;
+    s:hasTemporalRelation s:overlaps ;
+    s:hasTopologicalRelation s:parentPlatform .
+
+s:StateTypeCausality3 a s:StateTypeCausality ;
+    rdfs:label "HighChargingState causes LowBatterySocState" ;
+    s:cause s:HighChargingState ;
+    s:effect s:LowBatterySocState ;
+    s:hasCausalRelation s:causes ;
+    s:hasTemporalRelation s:before ;
+    s:hasTopologicalRelation s:siblingPlatform .
+
+s:StateTypeCausality4 a s:StateTypeCausality ;
+    rdfs:label "LowBatterySocState causes EnvelopeViolationState" ;
+    s:cause s:LowBatterySocState ;
+    s:effect s:EnvelopeViolationState ;
+    s:hasCausalRelation s:causes ;
+    s:hasTemporalRelation s:before ;
+    s:hasTopologicalRelation s:parentPlatform .
+
+s:StateTypeCausality5 a s:StateTypeCausality ;
+    rdfs:label "BatteryDipState enables EnvelopeViolationState" ;
+    s:cause s:BatteryDipState ;
+    s:effect s:EnvelopeViolationState ;
+    s:hasCausalRelation s:enables ;
+    s:hasTemporalRelation s:overlaps ;
+    s:hasTopologicalRelation s:parentPlatform .
+
+s:StateTypeCausality6 a s:StateTypeCausality ;
+    rdfs:label "HighChargingState causes EnvelopeViolationState" ;
+    s:cause s:HighChargingState ;
+    s:effect s:EnvelopeViolationState ;
+    s:hasCausalRelation s:causes ;
+    s:hasTemporalRelation s:overlaps ;
+    s:hasTopologicalRelation s:parentPlatform .
+
+s:StateTypeCausality7 a s:StateTypeCausality ;
+    rdfs:label "HighChargingState enables HighChargingDifferenceState" ;
+    s:cause s:HighChargingState ;
+    s:effect s:HighChargingDifferenceState ;
+    s:hasCausalRelation s:enables ;
+    s:hasTemporalRelation s:overlaps ;
+    s:hasTopologicalRelation s:samePlatform .
+
+s:StateTypeCausality8 a s:StateTypeCausality ;
+    rdfs:label "BatteryUnusedState enables EnvelopeViolationState" ;
+    s:cause s:BatteryUnusedState ;
+    s:effect s:EnvelopeViolationState ;
+    s:hasCausalRelation s:enables ;
+    s:hasTemporalRelation s:overlaps ;
+    s:hasTopologicalRelation s:parentPlatform .
+
+s:System sosa:hosts s:Garage1 .
+
+s:AP_Battery1_Sensor a sosa:Sensor ;
+    rdfs:label "AP_Battery1_Sensor" ;
+    s:hasSensorType s:AP_Battery_Sensor ;
+    sosa:observes s:ActivePower .
+
+s:AP_EVCharger1_Sensor a sosa:Sensor ;
+    rdfs:label "AP_EVCharger1_Sensor" ;
+    s:hasSensorType s:AP_EVCharger_Sensor ;
+    sosa:observes s:ActivePower .
+
+s:AP_EVCharger2_Sensor a sosa:Sensor ;
+    rdfs:label "AP_EVCharger2_Sensor" ;
+    s:hasSensorType s:AP_EVCharger_Sensor ;
+    sosa:observes s:ActivePower .
+
+s:AP_Garage1_Sensor a sosa:Sensor ;
+    rdfs:label "AP_Garage1_Sensor" ;
+    s:hasSensorType s:AP_Garage_Sensor ;
+    sosa:observes s:ActivePower .
+
+s:AP_Garage_Sensor rdfs:subClassOf s:AP_Sensor .
+
+s:AP_PVSystem1_Sensor a sosa:Sensor ;
+    rdfs:label "AP_PVSystem1_Sensor" ;
+    s:hasSensorType s:AP_PVSystemSensor ;
+    sosa:observes s:ActivePower .
+
+s:AP_PVSystemSensor rdfs:subClassOf s:AP_Sensor .
+
+s:Battery rdfs:subClassOf s:Buffer .
+
+s:Battery1 a s:Battery ;
+    rdfs:label "Battery1" ;
+    sosa:hosts s:AP_Battery1_Sensor,
+        s:SOC_Battery1_Sensor .
+
+s:BatteryDipState a s:StateType ;
+    rdfs:label "BatteryDipState" ;
+    s:associatedSensorType s:AP_Battery_Sensor .
+
+s:BatteryUnusedState a s:StateType ;
+    rdfs:label "BatteryUnusedState" ;
+    s:associatedSensorType s:AP_Battery_Sensor .
+
+s:Buffer rdfs:subClassOf sosa:Platform .
+
+s:Consumer rdfs:subClassOf sosa:Platform .
+
+s:EVCharger1 a s:EVCharger ;
+    rdfs:label "EVCharger1" ;
+    sosa:hosts s:AP_EVCharger1_Sensor .
+
+s:EVCharger2 a s:EVCharger ;
+    rdfs:label "EVCharger2" ;
+    sosa:hosts s:AP_EVCharger2_Sensor .
+
+s:EnvelopeEntity rdfs:subClassOf sosa:Platform .
+
+s:EnvelopeNormalEvent a s:EventType ;
+    rdfs:label "EnvelopeNormalEvent" .
+
+s:EnvelopeViolatedEvent a s:EventType ;
+    rdfs:label "EnvelopeViolatedEvent" .
+
+s:EnvelopeViolation_Garage1_Sensor a sosa:Sensor ;
+    rdfs:label "EnvelopeViolation_Garage1_Sensor" ;
+    s:hasSensorType s:EnvelopeViolation_Garage_Sensor ;
+    sosa:observes s:EnvelopeViolation .
+
+s:EnvelopeViolation_Garage_Sensor rdfs:subClassOf s:EnvelopeViolation_Sensor .
+
+s:Garage rdfs:subClassOf s:EnvelopeEntity .
+
+s:Garage1 a s:Garage ;
+    rdfs:label "Garage1" ;
+    sosa:hosts s:AP_Garage1_Sensor,
+        s:EVCharger1,
+        s:EVCharger2,
+        s:EnvelopeViolation_Garage1_Sensor,
+        s:OE_Garage1_Sensor,
+        s:PVSystem1 .
+
+s:HighChargingEvent a s:EventType ;
+    rdfs:label "HighChargingEvent" .
+
+s:NormalChargingEvent a s:EventType ;
+    rdfs:label "NormalChargingEvent" .
+
+s:OE_Garage1_Sensor a sosa:Sensor ;
+    rdfs:label "OE_Garage1_Sensor" ;
+    s:hasSensorType s:OE_Garage_Sensor ;
+    sosa:observes s:OperatingEnvelope .
+
+s:OE_Garage_Sensor rdfs:subClassOf s:OE_Sensor .
+
+s:OE_Sensor rdfs:subClassOf s:Sensor,
+        s:SensorType .
+
+s:PVSystem rdfs:subClassOf s:Producer .
+
+s:PVSystem1 a s:PVSystem ;
+    rdfs:label "PVSystem1" ;
+    sosa:hosts s:AP_PVSystem1_Sensor .
+
+s:Producer rdfs:subClassOf sosa:Platform .
+
+s:SOC_Battery1_Sensor a sosa:Sensor ;
+    rdfs:label "SOC_Battery1_Sensor" ;
+    s:hasSensorType s:SOC_Battery_Sensor ;
+    sosa:observes s:StateOfCharge .
+
+s:SOC_Battery_Sensor rdfs:subClassOf s:SOC_Sensor .
+
+s:samePlatform a s:topologicalRelation .
+
+s:BatteryDischargeLoadingState a s:StateType ;
+    rdfs:label "BatteryDischargeLoadingState" ;
+    s:associatedSensorType s:AP_Battery_Sensor .
+
+s:EVCharger rdfs:subClassOf s:Consumer .
+
+s:EnvelopeViolation_Sensor rdfs:subClassOf s:Sensor,
+        s:SensorType .
+
+s:HighChargingDifferenceState a s:StateType ;
+    rdfs:label "HighChargingDifferenceState" ;
+    s:associatedSensorType s:AP_EVCharger_Sensor .
+
+s:LowBatterySocState a s:StateType ;
+    rdfs:label "LowBatterySocState" ;
+    s:associatedSensorType s:SOC_Sensor .
+
+s:SOC_Sensor rdfs:subClassOf s:Sensor,
+        s:SensorType .
+
+s:before a s:temporalRelation .
+
+s:siblingPlatform a s:topologicalRelation .
+
+s:HighChargingState a s:StateType ;
+    rdfs:label "HighChargingState" ;
+    s:associatedSensorType s:AP_EVCharger_Sensor ;
+    s:hasEndEventType s:NormalChargingEvent ;
+    s:hasStartEventType s:HighChargingEvent .
+
+s:AP_EVCharger_Sensor rdfs:subClassOf s:AP_Sensor .
+
+s:Sensor rdfs:subClassOf s:SensorType .
+
+s:causes a s:causalRelation .
+
+s:enables a s:causalRelation .
+
+s:AP_Battery_Sensor rdfs:subClassOf s:AP_Sensor .
+
+s:AP_Sensor rdfs:subClassOf s:Sensor,
+        s:SensorType .
+
+s:EnvelopeViolationState a s:StateType ;
+    rdfs:label "EnvelopeViolationState" ;
+    s:associatedSensorType s:EnvelopeViolation_Sensor ;
+    s:hasEndEventType s:EnvelopeNormalEvent ;
+    s:hasStartEventType s:EnvelopeViolatedEvent .
+
+s:parentPlatform a s:topologicalRelation .
+
+s:overlaps a s:temporalRelation .
+

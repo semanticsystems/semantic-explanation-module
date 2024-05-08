@@ -1,0 +1,112 @@
+@prefix base: <http://w3id.org/explainability/sense#> .
+@prefix s: <http://w3id.org/explainability/sense#> .
+@prefix sosa: <http://www.w3.org/ns/sosa/> .
+@prefix ssn: <https://www.w3.org/ns/ssn/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+
+# Event Types - defined a priori
+:EnvelopeViolatedEvent a s:EventType .
+:EnvelopeNormalEvent a s:EventType .
+:HighChargingEvent a s:EventType .
+:NormalChargingEvent a s:EventType .
+:HighChargingDifferenceEvent a s:EventType .
+:StableChargingEvent a s:EventType . # idea of event definition as no big difference between now and before
+:BatteryDepletedEvent a s:EventType .
+:BatteryNotDepletedEvent a s:EventType .
+:BatteryDischargeLoadingEvent a s:EventType .
+:BatteryDischargeStableEvent a s:EventType . # idea of event definition as no big difference between now and before
+:BatteryDipEvent a s:EventType .
+:BatteryUnusedEvent a s:EventType .
+:BatteryUsedEvent a s:EventType . 
+
+# State Types - defined a priori incl Event-to-State-Type Mapping
+:EnvelopeViolationState a s:StateType ;
+    s:hasStartEventType EnvelopeViolatedEvent ;
+    s:hasEndEventType EnvelopeNormalEvent .
+:HighChargingState a s:StateType ;
+    s:hasStartEventType :HighChargingEvent ;
+    s:hasEndEventType :NormalChargingEvent .
+:HighChargingDifferenceState a s:StateType ;
+    s:hasStartEventType :HighChargingDifferenceEvent ;
+    s:hasEndEventType :StableChargingEvent .    
+:LowBatterySoCState a s:StateType .
+    s:hasStartEventType :BatteryDepletedEvent ;
+    s:hasEndEventType :BatteryNotDepletedEvent .
+:BatteryDischargeLoadingState a s:StateType .
+    s:hasStartEventType :BatteryDischargeLoadingEvent ;
+    s:hasEndEventType :BatteryDischargeStableEvent .
+:BatteryDipState a s:StateType .
+    s:hasStartEventType :BatteryDipEvent ;
+    s:hasEndEventType :BatteryDischargeStableEvent .
+:BatteryUnusedState a s:StateType .
+    s:hasStartEventType :BatteryUnusedEvent ;
+    s:hasEndEventType :BatteryUsedEvent .
+
+# topology
+:Garage1 a sosa:Platform ;
+    sosa:hosts :Garage1_APSensor ;
+    sosa:hosts :Garage1_OperatingEnvelopeSensor ;
+    sosa:hosts :Garage1_EnvelopeViolationSensor .
+    #...
+
+:Garage1_EnvelopeViolationSensor a sosa:Sensor ;# Virtual Sensor
+    s:hasSensorType s:EnvelopeViolationSensor ;
+    ssn:implements :EnvelopeViolatedEventDetection ;
+    ssn:implements :EnvelopeNormalEventDetection ;
+    sosa:observes :EnvelopeViolationProperty .
+
+:EnvelopeViolationProperty a sosa:ObservableProperty .
+
+:EnvelopeViolatedEventDetection a s:EventDetection ;
+    s:algorithm "some info about the formula, etc" ;
+    s:timeSeriesDataRef "info about influxdb link?" .
+
+:EnvelopeNormalEventDetection a s:EventDetection ;
+    s:algorithm "some info about the formula, etc" ;
+    s:timeSeriesDataRef "info about influxdb link?" .
+
+# Instance of Event - created when EnvelopeViolatedEvent is detected by the event detection module
+:Garage1_EnvelopeViolationSensor sosa:madeObservation :EnvelopeViolatedEvent_Observation1 .
+
+:EnvelopeViolatedEvent_Observation1 a sosa:Observation ;
+    sosa:usedProcedure :EnvelopeViolatedEventDetection ;
+    sosa:phenomenonTime "2023-04-01 10:00" ;
+    sosa:observedProperty :EnvelopeViolationProperty ;
+    s:detectedEvent :EnvelopeViolatedEvent1 .
+
+:EnvelopeViolatedEvent1 a s:Event ;
+    s:hasEventType EnvelopeViolatedEvent .
+
+# Instance of State - created as soon as the event above is pushed/detected - because we find the eventType in the event-state-mapping
+# -> this should be done by a SPARQL construct query
+:Garage1_EnvelopeViolationSensor sosa:madeObservation :EnvelopeViolationState_Observation1 .
+
+:EnvelopeViolationState_Observation1 sosa:usedProcedure s:EventToStateConversion ;
+    s:observedState :EnvelopeViolationState1 ;
+    sosa:observedProperty :EnvelopeViolationProperty .
+
+:EnvelopeViolationState1 a s:State ;
+    s:hasStartEvent :EnvelopeViolatedEvent1 ;
+    s:hasStateType :EnvelopeViolation .
+
+# Event detected, which is the end of the state
+:Garage1_EnvelopeViolationSensor sosa:madeObservation :EnvelopeNormalEvent_Observation1 .
+
+:EnvelopeNormalEvent_Observation1 a sosa:Observation ;
+    sosa:usedProcedure :EnvelopeNormalEventDetection ;
+    sosa:phenomenonTime "2023-04-01 11:00" ;
+    sosa:observedProperty :EnvelopeViolationProperty ;
+    s:detectedEvent :EnvelopeNormalEvent1 .
+
+:EnvelopeNormalEvent1 a s:Event ;
+    s:hasEventType EnvelopeNormalEvent ;
+
+# Instance of States - updated as new event was detected
+# -> this should be done by a SPARQL construct query
+:EnvelopeViolationState_Observation2 sosa:usedProcedure s:EventToStateConversion ;
+    s:observedState :EnvelopeViolationState1 ;
+    sosa:observedProperty :EnvelopeViolationProperty .
+
+:EnvelopeViolationState1 s:hasEndEvent :EnvelopeNormalEvent1 .
+

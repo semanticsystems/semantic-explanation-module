@@ -1,0 +1,49 @@
+PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+PREFIX sense:  <http://w3id.org/explainability/sense#>
+PREFIX sosa: <http://www.w3.org/ns/sosa/>
+PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
+insert{GRAPH <http://example.org/ActualStateCausality> {
+        ?causeState sense:causes ?effectState . # is this allowed? ?causalRelation
+    }}
+where {
+    # effect State
+    ?effectState a sense:State .
+    ?effectState sense:hasStateType ?effectStateType .
+    ?effectObservation sosa:hasResult ?effectState .
+    ?effectObservation sense:startTime ?effectStart .
+    ?effectObservation sense:endTime ?effectEnd .
+    ?effectSensor sosa:madeObservation ?effectObservation .
+    ?effectPlatform sosa:hosts ?effectSensor .
+    ?effectParentPlatform sosa:hosts ?effectPlatform .
+    # cause State
+    ?causeState a sense:State .
+    ?causeState sense:hasStateType ?causeStateType .
+    ?causeObservation sosa:hasResult ?causeState .
+    ?causeObservation sense:startTime ?causeStart .
+    ?causeObservation sense:endTime ?causeEnd .
+    ?causeSensor sosa:madeObservation ?causeObservation .
+    ?causePlatform sosa:hosts ?causeSensor .
+    ?causeParentPlatform sosa:hosts ?causePlatform .
+    {
+	select ?causeStateType ?effectStateType ?causalRelation ?topologicalRelation ?temporalRelation
+		where { 
+        ?stc a sense:StateTypeCausality .
+        ?stc sense:cause ?causeStateType .    
+        ?stc sense:effect ?effectStateType .
+        ?stc sense:hasCausalRelation ?causalRelation .
+        ?stc sense:hasTemporalRelation ?temporalRelation .
+        ?stc sense:hasTopologicalRelation ?topologicalRelation .
+    	}
+	}
+    BIND(
+    	IF(?topologicalRelation = sense:samePlatform, ?causePlatform = ?effectPlatform, 
+    	IF(?topologicalRelation = sense:parentPlatform, ?causeParentPlatform = ?effectPlatform, 
+    	IF(?topologicalRelation = sense:siblingPlatform, ?causeParentPlatform = ?effectParentPlatform && ?causePlatform != ?effectPlatform, true))) as ?Platform_filter
+    )
+    BIND(
+    	IF(?temporalRelation= sense:overlaps, ?causeStart <= ?effectStart && ?effectStart <= ?causeEnd, 
+    	IF(?temporalRelation = sense:before, ?causeStart <= ?effectStart, true)) as ?temporal_filter
+    )
+  	FILTER(?Platform_filter && ?temporal_filter)
+} 

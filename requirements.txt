@@ -1,0 +1,8 @@
+graphdb-python
+pandas
+numpy
+rdflib
+openpyxl
+Pyarrow
+SPARQLWrapper
+networkx

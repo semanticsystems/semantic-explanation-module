@@ -1,0 +1,5 @@
+PlatformType,subClassOf_PlatformType
+EVCharger,Consumer
+Battery,Buffer
+PVSystem,Producer
+Garage,EnvelopeEntity

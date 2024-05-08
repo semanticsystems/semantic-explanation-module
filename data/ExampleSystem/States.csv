@@ -1,0 +1,3 @@
+StartDate,EndDate,StateType,Sensor,StateID
+2023-04-11 10:12:45+00:00,2023-04-11 11:19:00+00:00,HighChargingState,AP_EVCharger1_Sensor,HighChargingState1
+2023-04-11 11:00:35+00:00,2023-04-11 12:05:17+00:00,EnvelopeViolationState,AP_Garage1_Sensor,EnvelopeViolationState2
